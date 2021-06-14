@@ -1,9 +1,9 @@
 module registerfile (
-    cloock, flush,, reset,
+    clock, flush, reset,
     f2r_src1pipe1, f2r_src1pipe2, f2r_src1pipe3,
     f2r_src2pipe1, f2r_src2pipe2, f2r_src2pipe3,
     f2dr_instpipe1, f2dr_instpipe2, f2dr_instpipe3,
-    w2re_datapipe1, w2re_datapipe2, w2rre_datapipe3,
+    w2re_datapipe1, w2re_datapipe2, w2re_datapipe3,
     w2r_wrpipe1, w2r_wrpipe2, w2r_wrpipe3,
     w2re_destpipe1, w2re_destpipe2, w2re_destpipe3,
     r2e_src1datapipe1, r2e_src1datapipe2, r2e_src1datapipe3,
@@ -22,7 +22,7 @@ input [3:0] w2re_destpipe1, w2re_destpipe2, w2re_destpipe3;
 
 output [63:0] r2e_src1datapipe1, r2e_src1datapipe2, r2e_src1datapipe3;
 output [63:0] r2e_src2datapipe1, r2e_src2datapipe2, r2e_src2datapipe3;
-output [3:0] r2e_src1pipe1, r2e_src1pipe2, r2e_src1pipe2;
+output [3:0] r2e_src1pipe1, r2e_src1pipe2, r2e_src1pipe3;
 output [3:0] r2e_src2pipe1, r2e_src2pipe2, r2e_src2pipe3;
 
 reg [63:0] r2e_src1datapipe1, r2e_src1datapipe2, r2e_src1datapipe3;
@@ -67,82 +67,82 @@ begin
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b0010://sub
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b0011: //mul
                 begin
                     r2e_src1datapipe1 <= 64'h00000000ffffffff & memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= 64'h00000000ffffffff & memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b0100: //load
                 begin
                     r2e_src1datapipe1 <= 0;
                     r2e_src2datapipe1 <= 0;
-                end;
+                end
                 4'b0101:    //move
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= 0;
-                end;
+                end
                 4'b0110:    //read
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= 0;
-                end;
+                end
                 4'b0111:    //compare
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b1000:    //xor
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b1001:    //nand
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b1010:    //nor
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b1011:    //not
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= 0;
-                end;
+                end
                 4'b1100:    //shift left
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= 64'h000000000000000f & memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b1101:    //shift right
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= 64'h000000000000000f & memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b1110:    //barrel shift left
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= 64'h000000000000000f & memoryarray[f2r_src2pipe1];
-                end;
+                end
                 4'b0001:
                 begin
                     r2e_src1datapipe1 <= memoryarray[f2r_src1pipe1];
                     r2e_src2datapipe1 <= 64'h000000000000000f & memoryarray[f2r_src2pipe1];
-                end;
+                end
                 default:
                 begin
                     r2e_src1datapipe1 <= 0;
                     r2e_src2datapipe1 <= 0;
-                end;
+                end
             endcase
             // pipe 2
             case (f2dr_instpipe2)
@@ -155,82 +155,82 @@ begin
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b0010://sub
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b0011: //mul
                 begin
                     r2e_src1datapipe2 <= 64'h00000000ffffffff & memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= 64'h00000000ffffffff & memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b0100: //load
                 begin
                     r2e_src1datapipe2 <= 0;
                     r2e_src2datapipe2 <= 0;
-                end;
+                end
                 4'b0101:    //move
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= 0;
-                end;
+                end
                 4'b0110:    //read
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= 0;
-                end;
+                end
                 4'b0111:    //compare
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b1000:    //xor
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b1001:    //nand
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b1010:    //nor
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b1011:    //not
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= 0;
-                end;
+                end
                 4'b1100:    //shift left
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= 64'h000000000000000f & memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b1101:    //shift right
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= 64'h000000000000000f & memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b1110:    //barrel shift left
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= 64'h000000000000000f & memoryarray[f2r_src2pipe2];
-                end;
+                end
                 4'b0001:
                 begin
                     r2e_src1datapipe2 <= memoryarray[f2r_src1pipe2];
                     r2e_src2datapipe2 <= 64'h000000000000000f & memoryarray[f2r_src2pipe2];
-                end;
+                end
                 default:
                 begin
                     r2e_src1datapipe2 <= 0;
                     r2e_src2datapipe2 <= 0;
-                end;
+                end
             endcase
 
             // pipe 3
@@ -244,82 +244,82 @@ begin
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b0010://sub
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b0011: //mul
                 begin
                     r2e_src1datapipe3 <= 64'h00000000ffffffff & memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= 64'h00000000ffffffff & memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b0100: //load
                 begin
                     r2e_src1datapipe3 <= 0;
                     r2e_src2datapipe3 <= 0;
-                end;
+                end
                 4'b0101:    //move
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= 0;
-                end;
+                end
                 4'b0110:    //read
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= 0;
-                end;
+                end
                 4'b0111:    //compare
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b1000:    //xor
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b1001:    //nand
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b1010:    //nor
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b1011:    //not
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= 0;
-                end;
+                end
                 4'b1100:    //shift left
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= 64'h000000000000000f & memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b1101:    //shift right
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= 64'h000000000000000f & memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b1110:    //barrel shift left
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= 64'h000000000000000f & memoryarray[f2r_src2pipe3];
-                end;
+                end
                 4'b0001:
                 begin
                     r2e_src1datapipe3 <= memoryarray[f2r_src1pipe3];
                     r2e_src2datapipe3 <= 64'h000000000000000f & memoryarray[f2r_src2pipe3];
-                end;
+                end
                 default:
                 begin
                     r2e_src1datapipe3 <= 0;
                     r2e_src2datapipe3 <= 0;
-                end;
+                end
             endcase
             r2e_src1pipe1 <= f2r_src1pipe1;
             r2e_src1pipe2 <= f2r_src1pipe2;
@@ -350,7 +350,7 @@ begin
         if (w2r_wrpipe2)
             memoryarray[w2re_destpipe2] <= w2re_datapipe2;
 
-        if (w2re_wrpipe3)
+        if (w2r_wrpipe3)
             memoryarray[w2re_destpipe3] <= w2re_datapipe3;
     end
 end

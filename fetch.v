@@ -1,17 +1,28 @@
-module fetch( word, data, clock, reset, flush, f2d_data, f2d_destpipe1, f2d_despipe2, f2d_pipe3, 
-f2d_instpipe1, f2d_instpipe2, f2d_instpipe3,
-f2d_src1pipe1, f2d_src1pipe2, f2d_src1pipe3,
-f2d_src2pipe1, f2d_src2pipe2, f2d_src2pipe3);
+module fetch (word, data, clock, reset, flush,
+f2d_data,
+f2d_destpipe1, f2d_destpipe2, f2d_destpipe3,
+f2dr_instpipe1, f2dr_instpipe2, f2dr_instpipe3,
+f2r_src1pipe1, f2r_src1pipe2, f2r_src1pipe3,
+f2r_src2pipe1, f2r_src2pipe2, f2r_src2pipe3);
 
-input clock;
-input reset;
-input flush;
-input [63:0] word;
-input [191:0] data;
+
+input clock; // clock input
+input reset; // asynchronous reset active high
+input flush; // when active high, the pipe is flushed
+input [63:0] word; // this is for incoming VLIW
+// instruction word
+input [191:0] data; // incoming 192 bit data bus,
+// 64 bits for each pipe
+// represent the instruction for each pipe
+
 output [3:0] f2dr_instpipe1, f2dr_instpipe2, f2dr_instpipe3;
+// represent the destination register for eacpipe
 output [3:0] f2d_destpipe1, f2d_destpipe2, f2d_destpipe3;
+// represent the source1 register for each pipe
 output [3:0] f2r_src1pipe1, f2r_src1pipe2, f2r_src1pipe3;
-output [3:0] f2r_src2pipe2, f2r_src2pipe2, f2r_src2pipe3;
+// represent the source2 register for each pipe
+output [3:0] f2r_src2pipe1, f2r_src2pipe2, f2r_src2pipe3;
+// data bus output from fetch unit
 output [191:0] f2d_data;
 
 `include "regname.v"
@@ -19,7 +30,7 @@ output [191:0] f2d_data;
 reg [3:0] f2dr_instpipe1, f2dr_instpipe2, f2dr_instpipe3;
 reg [3:0] f2r_src1pipe1, f2r_src1pipe2, f2r_src1pipe3;
 reg [3:0] f2r_src2pipe1, f2r_src2pipe2, f2r_src2pipe3;
-reg [3:0] f2r_destpipe1, f2r_destpipe2, f2r_destpipe3;
+reg [3:0] f2d_destpipe1, f2d_destpipe2, f2d_destpipe3;
 reg [191:0] f2d_data;
 
 always @ (posedge clock or posedge reset)
@@ -35,9 +46,9 @@ begin
         f2r_src2pipe1 <= reg0;
         f2r_src2pipe2 <= reg0;
         f2r_src2pipe3 <= reg0;
-        f2r_destpipe1 <= reg0;
-        f2r_destpipe2 <= reg0;
-        f2r_destpipe3 <= reg0;
+        f2d_destpipe1 <= reg0;
+        f2d_destpipe2 <= reg0;
+        f2d_destpipe3 <= reg0;
         f2d_data <= 0;
     end
     else
@@ -287,7 +298,9 @@ begin
                 default: f2d_destpipe3 <= reg0;
             endcase
         
-            if ((word[58:55]=='b0100) | (word[38:35] == 4'b01000) | (word[18:15]) == 'b01000))
+            if ((word[58:55]== 4'b0100) |
+             (word[38:35] == 4'b0100) |
+              (word[18:15] == 4'b0100))
                 f2d_data <= data;
             else
                 f2d_data <= 0;
@@ -303,9 +316,9 @@ begin
             f2r_src2pipe1 <= reg0;
             f2r_src2pipe2 <= reg0;
             f2r_src2pipe3 <= reg0;
-            f2r_destpipe1 <= reg0;
-            f2r_destpipe2 <= reg0;
-            f2r_destpipe3 <= reg0;
+            f2d_destpipe1 <= reg0;
+            f2d_destpipe2 <= reg0;
+            f2d_destpipe3 <= reg0;
             f2d_data <= 0;
         end
     end 

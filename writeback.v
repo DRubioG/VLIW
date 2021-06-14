@@ -29,7 +29,7 @@ reg readdatavalid;
 
 // include the file that declares the parameter declaration for
 // register names and also instruction operations
-`include “regname.v”
+`include "regname.v"
 
 always @ (posedge clock or posedge reset)
 begin
